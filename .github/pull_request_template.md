@@ -1,6 +1,6 @@
 ## Describe your changes
 
-**EXAMPLE** Creating front-end and back-end folders.
+<!--- Creating front-end and back-end folders. --->
 
 ## Issue ticket number and link
 [Trello](www.example.com)
