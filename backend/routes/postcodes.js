@@ -1,17 +1,15 @@
 const express = require('express')
+const {
+    getAllPostcodes,
+    getSinglePostcode
+} = require('../controllers/postcodeController')
 const router = express.Router()
 
 
 //get all postcodes
-router.get('/', (req, res) => {
-    res.json({mssg: 'GET ALL POSTCODES'})
-})
+router.get('/', getAllPostcodes)
 
 //get single postcode
-router.get('/:id', (req, res) => {
-    res.json({mssg: 'GET SINGLE POSTCODE'})
-})
-
-//POST A NEW postcode SALE
+router.get('/:id', getSinglePostcode)
 
 module.exports = router
