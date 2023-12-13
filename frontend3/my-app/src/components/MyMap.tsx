@@ -1,15 +1,25 @@
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
-import customIconUrl from "./icons8-100--16.png";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "leaflet/dist/leaflet.css";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 
+const customIconUrl = require("./icons8-100--16.png");
 const customIcon = L.icon({
   iconUrl: customIconUrl,
   iconSize: [7.5, 7.5],
 });
 
+interface Postcode {
+  _id: string;
+  lat: number;
+  long: number;
+  postcode: string;
+}
+
 const MyMap = () => {
-  const [postcodes, setPostcodes] = useState(null);
+  const [postcodes, setPostcodes] = useState<Postcode[] | null>(null);
   useEffect(() => {
     const fetchPostcodes = async () => {
       const response = await fetch("/api/postcodes");
@@ -33,19 +43,21 @@ const MyMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {postcodes &&
-          postcodes.map((postcode) => (
-            <Marker
-              icon={customIcon}
-              key={postcode._id}
-              position={[postcode.lat, postcode.long]}
-              //title={[postcode.postcode]}
-            >
-              <Popup>
-                <b>{postcode.postcode}</b>
-              </Popup>
-            </Marker>
-          ))}
+        {postcodes && (
+          <MarkerClusterGroup>
+            {postcodes.map((postcode) => (
+              <Marker
+                icon={customIcon}
+                key={postcode._id}
+                position={[postcode.lat, postcode.long]}
+              >
+                <Popup>
+                  <b>{postcode.postcode}</b>
+                </Popup>
+              </Marker>
+            ))}
+          </MarkerClusterGroup>
+        )}
       </MapContainer>
     </div>
   );
