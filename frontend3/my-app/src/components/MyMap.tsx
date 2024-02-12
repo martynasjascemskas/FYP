@@ -43,21 +43,18 @@ const MyMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {postcodes && (
-          <MarkerClusterGroup>
-            {postcodes.map((postcode) => (
-              <Marker
-                icon={customIcon}
-                key={postcode._id}
-                position={[postcode.lat, postcode.long]}
-              >
-                <Popup>
-                  <b>{postcode.postcode}</b>
-                </Popup>
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
-        )}
+        {postcodes &&
+          postcodes.map((postcode) => (
+            <Marker
+              icon={customIcon}
+              key={postcode._id}
+              position={[postcode.lat, postcode.long]}
+            >
+              <Popup>
+                <b>{postcode.postcode}</b>
+              </Popup>
+            </Marker>
+          ))}
       </MapContainer>
     </div>
   );
