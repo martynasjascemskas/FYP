@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import MyMap from "../components/MyMap";
 
 const Home = () => {
-  const [postcodes, setPostcodes] = useState(null);
-  useEffect(() => {
-    const fetchPostcodes = async () => {
-      const response = await fetch("/api/postcodes");
-      const json = await response.json();
+  // const [postcodes, setPostcodes] = useState(null);
+  // useEffect(() => {
+  //   const fetchPostcodes = async () => {
+  //     const response = await fetch("/api/postcodes");
+  //     const json = await response.json();
 
-      if (response.ok) {
-        setPostcodes(json);
-      }
-    };
+  //     if (response.ok) {
+  //       setPostcodes(json);
+  //     }
+  //   };
 
-    fetchPostcodes();
-  }, []);
+  //   fetchPostcodes();
+  // }, []);
 
   return (
     <div className="home">

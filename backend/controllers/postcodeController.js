@@ -7,6 +7,15 @@ const getAllPostcodes = async (req, res) => {
     postcode: postcode.pcds,
     lat: postcode.lat,
     long: postcode.long,
+    avg_price_all_years: postcode.avg_price_all_years,
+    avg_price_2015: postcode.avg_price_2015,
+    avg_price_2016: postcode.avg_price_2016,
+    avg_price_2017: postcode.avg_price_2017,
+    avg_price_2018: postcode.avg_price_2018,
+    avg_price_2019: postcode.avg_price_2019,
+    avg_price_2020: postcode.avg_price_2020,
+    avg_price_2021: postcode.avg_price_2021,
+    avg_price_2022: postcode.avg_price_2022,
   }));
   res.status(200).json(filtered);
   //res.status(200).json(postcodes)
