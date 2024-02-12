@@ -9,4 +9,5 @@ Visualization tool for Post code price average.
 
 [Google Drive](https://drive.google.com/drive/folders/1Eys_iTOJ0MV4imoWZ1SbSlDGU6ZDrpk-?usp=sharing)
 
---legacy-peer-deps
+frontend: `npm install --legacy-peer-deps`
+backend: `npm install` && `npm run dev`
