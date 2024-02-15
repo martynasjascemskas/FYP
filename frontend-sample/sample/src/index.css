@@ -31,3 +31,8 @@ header a {
   padding: 20px;
   margin: 0 auto;
 }
+.loading {
+  font-size: 100px;
+  display: flex;
+  justify-content: center;
+}

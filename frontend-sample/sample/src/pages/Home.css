@@ -1,0 +1,28 @@
+/* google font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
+
+/* layout */
+:root {
+  --primary: #1aac83;
+  --error: #e7195a;
+}
+body {
+  background: #f1f1f1;
+  margin: 0;
+  font-family: "Poppins";
+}
+.container2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container2 .text {
+  flex: 15%;
+  font-size: 15px;
+  padding-left: 20px;
+}
+.container2 .map {
+  flex: 85%;
+  margin: 0 auto;
+  padding: 10px 20px;
+}

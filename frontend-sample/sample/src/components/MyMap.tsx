@@ -5,6 +5,9 @@ import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet/dist/leaflet.css";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import locationSvg from "./circle-svgrepo-com.svg";
+import LineChartMUI from "./LineGraph";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
@@ -29,13 +32,17 @@ interface Postcode {
 
 const MyMap = () => {
   const [postcodes, setPostcodes] = useState<Postcode[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
+    setIsLoading(true);
     const fetchPostcodes = async () => {
       const response = await fetch("/api/postcodes");
       const json = await response.json();
 
       if (response.ok) {
         setPostcodes(json);
+        setIsLoading(false);
       }
     };
 
@@ -52,7 +59,13 @@ const MyMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MarkerClusterGroup chunkedLoading>
+        {isLoading ? <div className="loading"> Loading... </div> : null}
+        <MarkerClusterGroup
+          chunkedLoading={true}
+          removeOutsideVisibleBounds={true}
+          disableClusteringAtZoom={16}
+          spiderfyOnMaxZoom={false}
+        >
           {postcodes &&
             postcodes.map((postcode) => (
               <Marker
@@ -68,22 +81,26 @@ const MyMap = () => {
                   Longtitude: <b>{postcode.long}</b>
                   <br />
                   Average Price 2015-2022: <b>{postcode.avg_price_all_years}</b>
-                  <br />
-                  Average 2015: <b>{postcode.avg_price_2015}</b>
-                  <br />
-                  Average 2016: <b>{postcode.avg_price_2016}</b>
-                  <br />
-                  Average 2017: <b>{postcode.avg_price_2017}</b>
-                  <br />
-                  Average 2018: <b>{postcode.avg_price_2018}</b>
-                  <br />
-                  Average 2019: <b>{postcode.avg_price_2019}</b>
-                  <br />
-                  Average 2020: <b>{postcode.avg_price_2020}</b>
-                  <br />
-                  Average 2021: <b>{postcode.avg_price_2021}</b>
-                  <br />
-                  Average 2022: <b>{postcode.avg_price_2022}</b>
+                  <LineChartMUI
+                    averageHousePricePerPostcode={{
+                      "2015": postcode.avg_price_2015,
+                      "2016": postcode.avg_price_2016,
+                      "2017": postcode.avg_price_2017,
+                      "2018": postcode.avg_price_2018,
+                      "2019": postcode.avg_price_2019,
+                      "2020": postcode.avg_price_2020,
+                      "2021": postcode.avg_price_2021,
+                      "2022": postcode.avg_price_2022,
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      navigate(`/something/${postcode.postcode}`);
+                    }}
+                  >
+                    Details
+                  </Button>
                 </Popup>
                 <Tooltip>
                   <b>{postcode.postcode}</b>

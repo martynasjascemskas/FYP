@@ -11,6 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.15.10",
+    "@mui/x-charts": "^6.19.4",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "node": "^21.6.1",
