@@ -8,6 +8,9 @@ import locationSvg from "./circle-svgrepo-com.svg";
 import LineChartMUI from "./LineGraph";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import LinearProgress from "@mui/material/LinearProgress";
+import { OpenStreetMapProvider } from "react-leaflet-geosearch";
+import SearchControl from "./SearchControl";
 
 const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
@@ -30,24 +33,28 @@ interface Postcode {
   avg_price_2022: number;
 }
 
-const MyMap = () => {
+const MyMap = (props: { value: number[] }) => {
   const [postcodes, setPostcodes] = useState<Postcode[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const prov = OpenStreetMapProvider();
   useEffect(() => {
     setIsLoading(true);
-    const fetchPostcodes = async () => {
-      const response = await fetch("/api/postcodes");
+    const fetchPostcodes = async (minPrice: number, maxPrice: number) => {
+      const response = await fetch(
+        `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}`
+      );
       const json = await response.json();
 
       if (response.ok) {
+        console.log("fetch");
         setPostcodes(json);
         setIsLoading(false);
       }
     };
 
-    fetchPostcodes();
-  }, []);
+    fetchPostcodes(props.value[0], props.value[1]);
+  }, [props.value]);
   return (
     <div>
       <MapContainer
@@ -59,7 +66,7 @@ const MyMap = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {isLoading ? <div className="loading"> Loading... </div> : null}
+        {isLoading ? <LinearProgress /> : null}
         <MarkerClusterGroup
           chunkedLoading={true}
           removeOutsideVisibleBounds={true}
@@ -96,7 +103,7 @@ const MyMap = () => {
                   <Button
                     variant="contained"
                     onClick={() => {
-                      navigate(`/something/${postcode.postcode}`);
+                      navigate(`/houseSalesByPostcode/${postcode.postcode}`);
                     }}
                   >
                     Details

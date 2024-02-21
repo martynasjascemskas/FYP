@@ -21,14 +21,15 @@ export default function SimpleLineChart(props: {
     <LineChart
       width={350}
       height={300}
+      margin={{ left: 65 }}
       slotProps={{ legend: { hidden: true } }}
       series={[
         {
           data: Object.values(averageHousePricePerPostcodeTransformed),
-          label: "AverageHousePricePerPostcode",
+          label: "Average House Price in Postcode",
           connectNulls: true,
         },
-        { data: AverageHousePricePerYear, label: "AverageHousePricePerYear" },
+        { data: AverageHousePricePerYear, label: "Average House Price in UK" },
       ]}
       xAxis={[
         {

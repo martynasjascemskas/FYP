@@ -1,4 +1,8 @@
-const Information = () => {
+import MinMaxSlider from "./MinMaxSlider";
+const SideBar = (props: {
+  value: number[];
+  onChange: (value: number[]) => void;
+}) => {
   return (
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
@@ -10,8 +14,9 @@ const Information = () => {
       nisl. Suspendisse at turpis vitae magna sodales laoreet vitae vitae dolor.
       Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       ac turpis egestas. Morbi et sem quis tortor varius tempus ut ac purus.
+      <MinMaxSlider value={props.value} onChange={props.onChange} />
     </p>
   );
 };
 
-export default Information;
+export default SideBar;
