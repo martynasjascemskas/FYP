@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import { GeoSearchControl } from "leaflet-geosearch";
-import "react-leaflet-geosearch/lib/react-leaflet-geosearch.css";
+import "./geosearch.css";
 
+// @ts-expect-error Javascript
 const SearchControl = (props) => {
   const map = useMap();
-
+  // @ts-expect-error Javascript
   useEffect(() => {
+    // @ts-expect-error Javascript
     const searchControl = new GeoSearchControl({
       provider: props.provider,
       ...props,
@@ -14,7 +16,7 @@ const SearchControl = (props) => {
 
     map.addControl(searchControl);
     return () => map.removeControl(searchControl);
-  }, [props]);
+  }, [map, props]);
 
   return null;
 };

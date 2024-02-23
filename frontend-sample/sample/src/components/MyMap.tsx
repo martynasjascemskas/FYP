@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Tooltip, FeatureGroup } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -9,14 +9,15 @@ import LineChartMUI from "./LineGraph";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
-import { OpenStreetMapProvider } from "react-leaflet-geosearch";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
 import SearchControl from "./SearchControl";
+import GetCurrentViewBounds from "./GetCurrentViewBounds";
+import RectangleSomething from "./RectangleSomething";
 
 const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
   iconSize: new L.Point(40, 47),
 });
-
 interface Postcode {
   _id: string;
   lat: number;
@@ -37,7 +38,7 @@ const MyMap = (props: { value: number[] }) => {
   const [postcodes, setPostcodes] = useState<Postcode[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const prov = OpenStreetMapProvider();
+  const prov = new OpenStreetMapProvider();
   useEffect(() => {
     setIsLoading(true);
     const fetchPostcodes = async (minPrice: number, maxPrice: number) => {
@@ -47,7 +48,7 @@ const MyMap = (props: { value: number[] }) => {
       const json = await response.json();
 
       if (response.ok) {
-        console.log("fetch");
+        console.log("fetch", minPrice, maxPrice);
         setPostcodes(json);
         setIsLoading(false);
       }
@@ -58,7 +59,7 @@ const MyMap = (props: { value: number[] }) => {
   return (
     <div>
       <MapContainer
-        style={{ height: "700px" }}
+        style={{ height: "87vh" }}
         center={[51.744498, -0.328599]}
         zoom={9}
       >
@@ -66,6 +67,20 @@ const MyMap = (props: { value: number[] }) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+        <SearchControl
+          provider={prov}
+          showMarker={true}
+          showPopup={false}
+          maxMarkers={3}
+          retainZoomLevel={false}
+          animateZoom={true}
+          autoClose={false}
+          searchLabel={"Search"}
+          notFoundMessage={"Address Not Found"}
+          keepResult={true}
+        />
+        <GetCurrentViewBounds />
+        <RectangleSomething />
         {isLoading ? <LinearProgress /> : null}
         <MarkerClusterGroup
           chunkedLoading={true}
