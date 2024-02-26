@@ -2,8 +2,22 @@ const postcodeModel = require("../models/postcodeModel");
 const mongoose = require("mongoose");
 
 const getAllPostcodes = async (req, res) => {
-  const postcodes = await postcodeModel.find({}).limit(1000);
+  const { minPrice, maxPrice } = req.query;
+  const postcodes = await postcodeModel
+    .find({
+      pcds: { $exists: true },
+      avg_price_all_years: {
+        $gte: minPrice,
+        $lte: maxPrice >= 500000 ? Number.MAX_SAFE_INTEGER : maxPrice,
+      },
+      lat: { $gte: 51.75173, $lte: 51.75726 },
+      long: { $gte: -0.34922, $lte: -0.32676 },
+    })
+    .limit(5000)
+    .lean();
+  // console.log(postcodes);
   const filtered = postcodes.map((postcode) => ({
+    _id: postcode._id,
     postcode: postcode.pcds,
     lat: postcode.lat,
     long: postcode.long,
@@ -18,7 +32,7 @@ const getAllPostcodes = async (req, res) => {
     avg_price_2022: postcode.avg_price_2022,
   }));
   res.status(200).json(filtered);
-  //res.status(200).json(postcodes)
+  //res.status(200).json(postcodes);
 };
 
 const getSinglePostcode = async (req, res) => {

@@ -12,12 +12,12 @@ body {
   font-family: "Poppins";
 }
 header {
-  background: #fff;
+  background: #e6e4e4;
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
 }
 header .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,4 +30,9 @@ header a {
   max-width: 1400px;
   padding: 20px;
   margin: 0 auto;
+}
+.loading {
+  font-size: 100px;
+  display: flex;
+  justify-content: center;
 }
