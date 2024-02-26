@@ -4,16 +4,16 @@ import Sidebar from "../components/SideBar";
 import "./Home.css";
 
 const Home = () => {
-  const [value, setValue] = React.useState<number[]>([0, 500000]);
+  const [filterValue, setFilterValue] = React.useState<number[]>([0, 500000]);
 
   return (
     <>
       <div className="container2">
         <div className="text">
-          <Sidebar value={value} onChange={setValue} />
+          <Sidebar value={filterValue} onChange={setFilterValue} />
         </div>
         <div className="map">
-          <MyMap value={value} />
+          <MyMap value={filterValue} />
         </div>
       </div>
     </>

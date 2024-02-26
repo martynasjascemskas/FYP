@@ -23,8 +23,8 @@ const SideBar = (props: {
         <br />
         The average price for each postcode was then computed and utilized for
         the map representation.
-        <MinMaxSlider value={props.value} onChange={props.onChange} />
       </p>
+      <MinMaxSlider value={props.value} onChange={props.onChange} />
     </>
   );
 };

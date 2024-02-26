@@ -24,7 +24,6 @@ const GetCurrentViewBounds = () => {
     };
 
     updateBounds();
-
     map.on("zoomend", updateBounds);
     map.on("dragend", updateBounds);
     return () => {

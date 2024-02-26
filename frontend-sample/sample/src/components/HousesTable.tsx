@@ -1,18 +1,19 @@
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { HouseSales } from "../pages/HouseSalesByPostcode";
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function DataTable({
   houseSales,
 }: {
   houseSales: HouseSales[];
 }) {
+  const navigate = useNavigate();
   const rows = houseSales
     ? houseSales.map((houseSale) => ({
         id: houseSale._id,
         price: houseSale.price,
         date: houseSale.date,
-        new_build: houseSale.new_build === "N" ? "No" : "Yes",
         type:
           houseSale.type === "F"
             ? "Flat"
@@ -38,16 +39,13 @@ export default function DataTable({
     : [];
 
   const columns: GridColDef[] = [
-    { field: "price", headerName: "Price Sold", width: 150 },
     { field: "date", headerName: "Date Sold", width: 150 },
-    { field: "new_build", headerName: "New Build", width: 90 },
-    { field: "type", headerName: "Type", width: 120 },
     {
       field: "fullAddress",
       headerName: "Full Address",
       description: "This column has a value getter and is not sortable.",
       sortable: false,
-      width: 750,
+      width: 600,
       valueGetter: (params: GridValueGetterParams) =>
         `${params.row.houseNumber || ""} ${
           params.row.subBuildingNumber || ""
@@ -55,13 +53,24 @@ export default function DataTable({
           params.row.townCity || ""
         } ${params.row.district || ""} ${params.row.county || ""}`,
     },
+    { field: "price", headerName: "Price Sold", width: 150 },
+    { field: "type", headerName: "Type", width: 120 },
     {
       field: "button",
       headerName: "",
       width: 130,
       renderCell: (params) => {
-        console.log(params);
-        return <Button variant="contained">DETAILS</Button>;
+        return (
+          <Button
+            variant="contained"
+            onClick={() => {
+              console.log(params.row);
+              navigate(`/houseSaleInfo/${params.row.id}`);
+            }}
+          >
+            Details
+          </Button>
+        );
       },
     },
   ];

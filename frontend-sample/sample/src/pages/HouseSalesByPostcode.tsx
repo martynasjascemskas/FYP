@@ -20,14 +20,14 @@ export interface HouseSales {
   address7: string;
 }
 
-const Something = () => {
+const HouseSalesByPostcode = () => {
   const { postcode } = useParams();
   const [houseSales, setHouseSales] = useState<HouseSales[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setIsLoading(true);
     const fetchHouseSales = async () => {
-      const response = await fetch(`/api/houses/${postcode}`);
+      const response = await fetch(`/api/houses/postcode/${postcode}`);
       const json = await response.json();
 
       if (response.ok) {
@@ -37,7 +37,7 @@ const Something = () => {
     };
 
     fetchHouseSales();
-  }, []);
+  }, [postcode]);
   return (
     <div>
       <b style={{ display: "flex", fontSize: "30px", marginLeft: "40%" }}>
@@ -45,22 +45,8 @@ const Something = () => {
       </b>
       {isLoading ? <LinearProgress /> : null}
       <HousesTable houseSales={houseSales} />
-      {/* <HousesTable
-        housesTableInfo={{
-          "House Price": houseSale.price
-          "Date Sold": houseSale.date,
-          "New Build": houseSale.new_build,
-          "House Number": houseSale.address1,
-          "Sub-building Number": houseSale.address2,
-          "Street": houseSales.address3,
-          "Locality": houseSales.address4,
-          "Town/City": houseSales.address5,
-          "District": houseSales.address6,
-          "County": houseSales.address7,
-        }}
-      /> */}
     </div>
   );
 };
 
-export default Something;
+export default HouseSalesByPostcode;

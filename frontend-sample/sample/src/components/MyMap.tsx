@@ -1,4 +1,4 @@
-import { MapContainer, Marker, Popup, TileLayer, Tooltip, FeatureGroup } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -12,7 +12,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import SearchControl from "./SearchControl";
 import GetCurrentViewBounds from "./GetCurrentViewBounds";
-import RectangleSomething from "./RectangleSomething";
+import "leaflet-draw/dist/leaflet.draw.css";
+import EditFeature from "./EditFeature";
 
 const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
@@ -40,8 +41,8 @@ const MyMap = (props: { value: number[] }) => {
   const navigate = useNavigate();
   const prov = new OpenStreetMapProvider();
   useEffect(() => {
-    setIsLoading(true);
     const fetchPostcodes = async (minPrice: number, maxPrice: number) => {
+      setIsLoading(true);
       const response = await fetch(
         `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}`
       );
@@ -58,6 +59,7 @@ const MyMap = (props: { value: number[] }) => {
   }, [props.value]);
   return (
     <div>
+      {isLoading && <LinearProgress />}
       <MapContainer
         style={{ height: "87vh" }}
         center={[51.744498, -0.328599]}
@@ -80,8 +82,7 @@ const MyMap = (props: { value: number[] }) => {
           keepResult={true}
         />
         <GetCurrentViewBounds />
-        <RectangleSomething />
-        {isLoading ? <LinearProgress /> : null}
+        <EditFeature />
         <MarkerClusterGroup
           chunkedLoading={true}
           removeOutsideVisibleBounds={true}
