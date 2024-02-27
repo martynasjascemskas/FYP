@@ -28,8 +28,9 @@ for filename in os.listdir('.'):
 # Step 3: Output the combined data to a new CSV
 postcodes_df.to_csv('combined_postcodes_prices.csv', index=False)
 
+# GPT4 ->
 # Create a new csv file called "combined_postcodes_prices.csv". 
-# Calculate the average price per year per postcode using csv files called "reduced_pp-<year>.csv" Looks like picture 2. 
+# Calculate the average price per year per postcode using csv files called "reduced_pp-<year>.csv".
 # There are multiple files with different years. 
 # Using the "combined_postcodes.csv" file which looks like picture 1,
 # create new columns for each year so that the first row in the csv file looks like: 'pcds, lat, long, avg_price_<year>,avg_price_<year>,
