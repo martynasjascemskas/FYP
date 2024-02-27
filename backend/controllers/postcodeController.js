@@ -3,6 +3,19 @@ const mongoose = require("mongoose");
 
 const getAllPostcodes = async (req, res) => {
   const { minPrice, maxPrice } = req.query;
+  const currentView = req.query.currentView
+    .replace(/\[|\]/g, "")
+    .split(",")
+    .map(parseFloat);
+  console.log(
+    currentView[0] +
+      " " +
+      currentView[1] +
+      " " +
+      currentView[2] +
+      " " +
+      currentView[3]
+  );
   const postcodes = await postcodeModel
     .find({
       pcds: { $exists: true },
@@ -10,8 +23,8 @@ const getAllPostcodes = async (req, res) => {
         $gte: minPrice,
         $lte: maxPrice >= 500000 ? Number.MAX_SAFE_INTEGER : maxPrice,
       },
-      lat: { $gte: 51.75173, $lte: 51.75726 },
-      long: { $gte: -0.34922, $lte: -0.32676 },
+      lat: { $gte: currentView[2], $lte: currentView[0] },
+      long: { $gte: currentView[3], $lte: currentView[1] },
     })
     .limit(5000)
     .lean();

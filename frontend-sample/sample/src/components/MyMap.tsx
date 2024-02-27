@@ -19,7 +19,7 @@ const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
   iconSize: new L.Point(40, 47),
 });
-interface Postcode {
+export interface Postcode {
   _id: string;
   lat: number;
   long: number;
@@ -44,12 +44,12 @@ const MyMap = (props: { value: number[] }) => {
     const fetchPostcodes = async (minPrice: number, maxPrice: number) => {
       setIsLoading(true);
       const response = await fetch(
-        `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}`
+        `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}&currentView=[51.748756628771774,-0.30229858398437506,51.72388736878808,-0.38726806640625]`
       );
       const json = await response.json();
 
       if (response.ok) {
-        console.log("fetch", minPrice, maxPrice);
+        console.log("map fetch 51.748756628771774,-0.30229858398437506,51.72388736878808,-0.38726806640625", minPrice, maxPrice);
         setPostcodes(json);
         setIsLoading(false);
       }
@@ -82,7 +82,7 @@ const MyMap = (props: { value: number[] }) => {
           keepResult={true}
         />
         <GetCurrentViewBounds />
-        <EditFeature />
+        <EditFeature filterValues={props.value} />
         <MarkerClusterGroup
           chunkedLoading={true}
           removeOutsideVisibleBounds={true}
