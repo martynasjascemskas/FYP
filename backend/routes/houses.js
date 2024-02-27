@@ -1,26 +1,26 @@
-const express = require('express')
+const express = require("express");
 const {
-    createHouseSale,
-    getHousesSoldByPostcode,
-    getHouseSale,
-    deleteHouseSale,
-    updateHouseSale
-} = require('../controllers/houseController')
-const router = express.Router()
+  createHouseSale,
+  getHousesSoldByPostcode,
+  getHouseSale,
+  deleteHouseSale,
+  updateHouseSale,
+} = require("../controllers/houseController");
+const router = express.Router();
 
 //GET all houses by postcode
-router.get('/', getHousesSoldByPostcode)
+router.get("/postcode/:postcode", getHousesSoldByPostcode);
 
 //GET single house
-router.get('/:id', getHouseSale)
+router.get("/:id", getHouseSale);
 
 //POST A NEW HOUSE SALE
-router.post('/', createHouseSale)
+router.post("/", createHouseSale);
 
 //DELETE A HOUSE SALE
-router.delete('/:id', deleteHouseSale)
+router.delete("/:id", deleteHouseSale);
 
 //UPDATE A HOUSE SALE
-router.patch('/:id', updateHouseSale)
+router.patch("/:id", updateHouseSale);
 
-module.exports = router
+module.exports = router;
