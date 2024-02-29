@@ -16,6 +16,10 @@ export default function SimpleLineChart(props: {
       }
     })
   );
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "GBP",
+  }).format;
 
   return (
     <LineChart
@@ -28,8 +32,13 @@ export default function SimpleLineChart(props: {
           data: Object.values(averageHousePricePerPostcodeTransformed),
           label: "Average House Price in Postcode",
           connectNulls: true,
+          valueFormatter: currencyFormatter,
         },
-        { data: AverageHousePricePerYear, label: "Average House Price in UK" },
+        {
+          data: AverageHousePricePerYear,
+          label: "Average House Price in UK",
+          valueFormatter: currencyFormatter,
+        },
       ]}
       xAxis={[
         {

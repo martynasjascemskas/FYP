@@ -22,12 +22,19 @@ export interface HouseSales {
 
 const HouseSalesByPostcode = () => {
   const { postcode } = useParams();
+  const { selectedArea } = useParams();
   const [houseSales, setHouseSales] = useState<HouseSales[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setIsLoading(true);
     const fetchHouseSales = async () => {
-      const response = await fetch(`/api/houses/postcode/${postcode}`);
+      let apiUrl;
+      if (selectedArea) {
+        apiUrl = `/api/houses/postcode/selected/${selectedArea}`;
+      } else {
+        apiUrl = `/api/houses/postcode/${postcode}`;
+      }
+      const response = await fetch(apiUrl);
       const json = await response.json();
 
       if (response.ok) {
@@ -37,7 +44,7 @@ const HouseSalesByPostcode = () => {
     };
 
     fetchHouseSales();
-  }, [postcode]);
+  }, [postcode, selectedArea]);
   return (
     <div>
       <b style={{ display: "flex", fontSize: "30px", marginLeft: "40%" }}>

@@ -1,4 +1,11 @@
-import { MapContainer, Marker, Popup, TileLayer, Tooltip } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  Tooltip,
+  useMap,
+} from "react-leaflet";
 import { useEffect, useState } from "react";
 import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
@@ -11,9 +18,9 @@ import { useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import { OpenStreetMapProvider } from "leaflet-geosearch";
 import SearchControl from "./SearchControl";
-import GetCurrentViewBounds from "./GetCurrentViewBounds";
 import "leaflet-draw/dist/leaflet.draw.css";
 import EditFeature from "./EditFeature";
+import _debounce from "lodash/debounce";
 
 const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
@@ -38,25 +45,62 @@ interface Postcode {
 const MyMap = (props: { value: number[] }) => {
   const [postcodes, setPostcodes] = useState<Postcode[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [viewNorthEastLat, setViewNorthEastLat] = useState<number>(51.75726);
+  const [viewNorthEastLng, setViewNorthEastLng] = useState<number>(-0.32676);
+  const [viewSouthWestLat, setViewSouthWestLat] = useState<number>(51.75173);
+  const [viewSouthWestLng, setViewSouthWestLng] = useState<number>(-0.34922);
   const navigate = useNavigate();
   const prov = new OpenStreetMapProvider();
   useEffect(() => {
     const fetchPostcodes = async (minPrice: number, maxPrice: number) => {
       setIsLoading(true);
       const response = await fetch(
-        `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}`
+        `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}&currentView=[${viewNorthEastLat},${viewNorthEastLng},${viewSouthWestLat},${viewSouthWestLng}]`
       );
+      // const response = await fetch(
+      //   `/api/postcodes/withoutview?minPrice=${minPrice}&maxPrice=${maxPrice}`
+      // );
       const json = await response.json();
 
       if (response.ok) {
-        console.log("fetch", minPrice, maxPrice);
+        console.log(
+          `map fetch ${viewNorthEastLat},${viewNorthEastLng},${viewSouthWestLat},${viewSouthWestLng}`,
+          minPrice,
+          maxPrice
+        );
         setPostcodes(json);
         setIsLoading(false);
       }
     };
-
     fetchPostcodes(props.value[0], props.value[1]);
-  }, [props.value]);
+  }, [
+    props.value,
+    viewNorthEastLat,
+    viewNorthEastLng,
+    viewSouthWestLat,
+    viewSouthWestLng,
+  ]);
+  const GetCurrentViewBounds = () => {
+    const map = useMap();
+    useEffect(() => {
+      if (!map) return;
+      const debouncedUpdateBounds = _debounce(() => {
+        setViewNorthEastLat(map.getBounds().getNorthEast().lat);
+        setViewNorthEastLng(map.getBounds().getNorthEast().lng);
+        setViewSouthWestLat(map.getBounds().getSouthWest().lat);
+        setViewSouthWestLng(map.getBounds().getSouthWest().lng);
+      }, 1000);
+      //need to debounce so that zoomend/dragend doesnt fetch data every zoomend/dragend:
+      //Why does setting states lag frontend?
+      map.on("zoomend", debouncedUpdateBounds);
+      map.on("drag", debouncedUpdateBounds);
+      return () => {
+        map.off("zoomend", debouncedUpdateBounds);
+        map.off("drag", debouncedUpdateBounds);
+      };
+    }, [map]);
+    return null;
+  };
   return (
     <div>
       {isLoading && <LinearProgress />}
@@ -82,7 +126,7 @@ const MyMap = (props: { value: number[] }) => {
           keepResult={true}
         />
         <GetCurrentViewBounds />
-        <EditFeature />
+        <EditFeature filterValues={props.value} />
         <MarkerClusterGroup
           chunkedLoading={true}
           removeOutsideVisibleBounds={true}
