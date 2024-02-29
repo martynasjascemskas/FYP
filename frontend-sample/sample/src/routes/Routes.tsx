@@ -15,6 +15,10 @@ export const router = createBrowserRouter([
         element: <HouseSalesByPostcode />,
       },
       {
+        path: "/houseSalesByPostcode/selected/:selectedArea",
+        element: <HouseSalesByPostcode />,
+      },
+      {
         path: "/houseSaleInfo/:_id",
         element: <HouseSaleInfo />,
       },
