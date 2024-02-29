@@ -64,7 +64,6 @@ export default function DataTable({
           <Button
             variant="contained"
             onClick={() => {
-              console.log(params.row);
               navigate(`/houseSaleInfo/${params.row.id}`);
             }}
           >

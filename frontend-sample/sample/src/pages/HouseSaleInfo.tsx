@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -96,8 +95,8 @@ const HouseSaleInfo = () => {
                 }}
                 variant="h6"
               >
-                {singleHouseSale?.address1} {singleHouseSale?.address2}
-                {singleHouseSale?.address3} {singleHouseSale?.address4}
+                {singleHouseSale?.address1} {singleHouseSale?.address2}{" "}
+                {singleHouseSale?.address3} {singleHouseSale?.address4}{" "}
                 {singleHouseSale?.address5}{" "}
                 {singleHouseSale?.address6 === singleHouseSale?.address5
                   ? ""
@@ -200,8 +199,7 @@ const HouseSaleInfo = () => {
               referrerPolicy="no-referrer-when-downgrade"
               src={`https://www.google.com/maps/embed/v1/place?key=${
                 import.meta.env.VITE_GOOGLE_MAPS_API
-              }
-    &q=${singleHouseSale?.address1}+${singleHouseSale?.address2}+${
+              }&q=${singleHouseSale?.address1}+${singleHouseSale?.address2}+${
                 singleHouseSale?.address3
               }+${singleHouseSale?.address4}+${singleHouseSale?.address5}+${
                 singleHouseSale?.address6 === singleHouseSale?.address5
