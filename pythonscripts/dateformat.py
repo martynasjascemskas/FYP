@@ -11,4 +11,5 @@ output_file = 'your_output_file.csv'
 df.to_csv(output_file, index=False)
 
 print("'{output_file}' has been created with the updated date format.")
-#Changes date format from "16-04-2015" to "2015-04-16"
+
+#Change date format of csv from "16-04-2015" to "2015-04-16"
