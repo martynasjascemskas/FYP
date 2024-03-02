@@ -9,6 +9,11 @@ export default function DataTable({
   houseSales: HouseSales[];
 }) {
   const navigate = useNavigate();
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format;
   const rows = houseSales
     ? houseSales.map((houseSale) => ({
         id: houseSale._id,
@@ -53,7 +58,12 @@ export default function DataTable({
           params.row.townCity || ""
         } ${params.row.district || ""} ${params.row.county || ""}`,
     },
-    { field: "price", headerName: "Price Sold", width: 150 },
+    {
+      field: "price",
+      headerName: "Price Sold",
+      width: 150,
+      valueFormatter: (params) => currencyFormatter(params.value),
+    },
     { field: "type", headerName: "Type", width: 120 },
     {
       field: "button",

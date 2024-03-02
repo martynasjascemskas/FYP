@@ -41,23 +41,23 @@ const EditFeature = (props: { filterValues: number[] }) => {
         // @ts-expect-error type -> postcode
         (postcode) => postcode.postcode
       );
-      const averagePrice = calculateAvgPrice(postcodes);
-      const averagePricesAllYears = calculateYearlyAvgPrice(postcodes);
+      const medianPrice = calculateMedianPrice(postcodes);
+      const medianPricesAllYears = calculateYearlyMedianPrice(postcodes);
       const div = document.createElement("div");
       const root = createRoot(div);
       flushSync(() => {
         root.render(
           <>
             <LineChartMUI
-              averageHousePricePerPostcode={{
-                "2015": Number(averagePricesAllYears[0]),
-                "2016": Number(averagePricesAllYears[1]),
-                "2017": Number(averagePricesAllYears[2]),
-                "2018": Number(averagePricesAllYears[3]),
-                "2019": Number(averagePricesAllYears[4]),
-                "2020": Number(averagePricesAllYears[5]),
-                "2021": Number(averagePricesAllYears[6]),
-                "2022": Number(averagePricesAllYears[7]),
+              medianHousePricePerPostcode={{
+                "2015": Number(medianPricesAllYears[0]),
+                "2016": Number(medianPricesAllYears[1]),
+                "2017": Number(medianPricesAllYears[2]),
+                "2018": Number(medianPricesAllYears[3]),
+                "2019": Number(medianPricesAllYears[4]),
+                "2020": Number(medianPricesAllYears[5]),
+                "2021": Number(medianPricesAllYears[6]),
+                "2022": Number(medianPricesAllYears[7]),
               }}
             />
             <Button
@@ -74,7 +74,7 @@ const EditFeature = (props: { filterValues: number[] }) => {
 
       const popupOptions = { className: "customPopup" };
       const template = getTemplate(
-        averagePrice,
+        medianPrice,
         rectangleNorthEastLat,
         rectangleNorthEastLng,
         rectangleSouthWestLat,
@@ -91,17 +91,27 @@ const EditFeature = (props: { filterValues: number[] }) => {
   }, [_onCreated]);
 
   // @ts-expect-error type -> postcodes
-  const calculateAvgPrice = (postcodes) => {
-    const total = postcodes.reduce(
-      // @ts-expect-error type -> postcode
-      (sum: number, postcode) => sum + postcode.avg_price_all_years,
-      0
-    );
-    const averagePrice = (total / postcodes.length).toFixed(0);
-    return averagePrice;
+  const calculateMedianPrice = (postcodes) => {
+    const sortedPrices = postcodes
+      // @ts-expect-error type -> postcodes
+      .map((postcode) => postcode.median_price_all_years)
+      // @ts-expect-error type -> a, b
+      .sort((a, b) => a - b);
+
+    let median;
+
+    if (sortedPrices.length % 2 === 0) {
+      const middle1 = sortedPrices[sortedPrices.length / 2 - 1];
+      const middle2 = sortedPrices[sortedPrices.length / 2];
+      median = ((middle1 + middle2) / 2).toFixed(0);
+    } else {
+      const middleIndex = Math.floor(sortedPrices.length / 2);
+      median = sortedPrices[middleIndex].toFixed(0);
+    }
+    return median;
   };
   // @ts-expect-error type -> postcodes
-  const calculateYearlyAvgPrice = (postcodes) => {
+  const calculateYearlyMedianPrice = (postcodes) => {
     const years = [
       "2015",
       "2016",
@@ -112,34 +122,60 @@ const EditFeature = (props: { filterValues: number[] }) => {
       "2021",
       "2022",
     ];
-    const averagePricesAllYears = years.map((year) => {
+    const medianPricesAllYears = years.map((year) => {
       const validPostcodes = postcodes.filter(
-        // @ts-expect-error type -> postcode
-        (postcode) => postcode[`avg_price_${year}`] !== 0
+        // @ts-expect-error type -> postcodes
+        (postcode) => postcode[`median_price_${year}`] !== 0
       );
-      const totalPrices = validPostcodes.reduce(
-        // @ts-expect-error type -> postcode
-        (sum: number, postcode) => sum + postcode[`avg_price_${year}`],
-        0
-      );
-      return validPostcodes.length > 0
-        ? (totalPrices / validPostcodes.length).toFixed(0)
-        : 0;
+
+      const sortedPrices = validPostcodes
+        .map(
+          // @ts-expect-error type -> postcodes
+          (postcode) => postcode[`median_price_${year}`]
+        )
+        // @ts-expect-error type -> a, b
+        .sort((a, b) => a - b);
+
+      let median;
+
+      if (sortedPrices.length > 0) {
+        if (sortedPrices.length % 2 === 0) {
+          const middle1 = sortedPrices[sortedPrices.length / 2 - 1];
+          const middle2 = sortedPrices[sortedPrices.length / 2];
+          median = ((middle1 + middle2) / 2).toFixed(0);
+        } else {
+          const middleIndex = Math.floor(sortedPrices.length / 2);
+          median = sortedPrices[middleIndex].toFixed(0);
+        }
+      } else {
+        median = 0;
+      }
+
+      return median;
     });
-    return averagePricesAllYears;
+
+    return medianPricesAllYears;
   };
+
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format;
   const getTemplate = (
-    averagePrice: string,
+    medianPrice: string,
     rectangleNorthEastLat: number,
     rectangleNorthEastLng: number,
     rectangleSouthWestLat: number,
     rectangleSouthWestLng: number,
     div: HTMLDivElement
   ) => {
+    const medianPriceNumber = parseFloat(medianPrice);
+    const formattedMedianPrice = currencyFormatter(medianPriceNumber);
     const containerDiv = document.createElement("div");
     const infoDiv = document.createElement("div");
     infoDiv.innerHTML =
-      `<div>Selected Area Average: <b>${averagePrice}</b></div>` +
+      `<div>Selected Area Average: <b>${formattedMedianPrice}</b></div>` +
       `<div>Selected Coordinates: <br/> <b>[${(
         Math.round(rectangleNorthEastLat * 10000000) / 10000000
       ).toFixed(7)} ${(
