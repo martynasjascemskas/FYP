@@ -68,10 +68,10 @@ export default function RangeSlider(props: {
         display="block"
         marginTop={"10px"}
       >
-        {"House Price 2015-2022"}
+        {"Postcode Price 2015-2022"}
       </Typography>
       <CustomSlider
-        getAriaLabel={() => "House Price 2015-2022"}
+        getAriaLabel={() => "Postcode Price 2015-2022"}
         value={value2}
         onChange={handleChange}
         onChangeCommitted={(event, newValue) => {

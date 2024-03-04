@@ -5,10 +5,10 @@ const AverageHousePricePerYear = [
 ];
 
 export default function SimpleLineChart(props: {
-  averageHousePricePerPostcode: { [key: string]: number };
+  medianHousePricePerPostcode: { [key: string]: number };
 }) {
-  const averageHousePricePerPostcodeTransformed = Object.fromEntries(
-    Object.entries(props.averageHousePricePerPostcode).map((entry) => {
+  const medianHousePricePerPostcodeTransformed = Object.fromEntries(
+    Object.entries(props.medianHousePricePerPostcode).map((entry) => {
       if (entry[1] > 0) {
         return entry;
       } else {
@@ -19,6 +19,7 @@ export default function SimpleLineChart(props: {
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "GBP",
+    maximumFractionDigits: 0,
   }).format;
 
   return (
@@ -29,7 +30,7 @@ export default function SimpleLineChart(props: {
       slotProps={{ legend: { hidden: true } }}
       series={[
         {
-          data: Object.values(averageHousePricePerPostcodeTransformed),
+          data: Object.values(medianHousePricePerPostcodeTransformed),
           label: "Average House Price in Postcode",
           connectNulls: true,
           valueFormatter: currencyFormatter,
@@ -43,7 +44,7 @@ export default function SimpleLineChart(props: {
       xAxis={[
         {
           scaleType: "point",
-          data: Object.keys(averageHousePricePerPostcodeTransformed),
+          data: Object.keys(medianHousePricePerPostcodeTransformed),
         },
       ]}
     />

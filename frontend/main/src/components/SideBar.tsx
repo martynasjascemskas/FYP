@@ -1,4 +1,5 @@
 import MinMaxSlider from "./MinMaxSlider";
+import SecondSlider from "./Slider1to5";
 const SideBar = (props: {
   value: number[];
   onChange: (value: number[]) => void;
@@ -21,10 +22,11 @@ const SideBar = (props: {
         </a>
         )
         <br />
-        The average price for each postcode was then computed and utilized for
+        The median price for each postcode was then computed and utilized for
         the map representation.
       </p>
       <MinMaxSlider value={props.value} onChange={props.onChange} />
+      <SecondSlider value={props.value} onChange={props.onChange} />
     </>
   );
 };

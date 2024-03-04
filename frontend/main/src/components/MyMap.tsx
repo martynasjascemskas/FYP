@@ -31,24 +31,33 @@ interface Postcode {
   lat: number;
   long: number;
   postcode: string;
-  avg_price_all_years: number;
-  avg_price_2015: number;
-  avg_price_2016: number;
-  avg_price_2017: number;
-  avg_price_2018: number;
-  avg_price_2019: number;
-  avg_price_2020: number;
-  avg_price_2021: number;
-  avg_price_2022: number;
+  median_price_all_years: number;
+  median_price_2015: number;
+  median_price_2016: number;
+  median_price_2017: number;
+  median_price_2018: number;
+  median_price_2019: number;
+  median_price_2020: number;
+  median_price_2021: number;
+  median_price_2022: number;
 }
 
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "GBP",
+  maximumFractionDigits: 0,
+}).format;
 const MyMap = (props: { value: number[] }) => {
   const [postcodes, setPostcodes] = useState<Postcode[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [viewNorthEastLat, setViewNorthEastLat] = useState<number>(51.75726);
-  const [viewNorthEastLng, setViewNorthEastLng] = useState<number>(-0.32676);
-  const [viewSouthWestLat, setViewSouthWestLat] = useState<number>(51.75173);
-  const [viewSouthWestLng, setViewSouthWestLng] = useState<number>(-0.34922);
+  const [viewNorthEastLat, setViewNorthEastLat] =
+    useState<number>(52.43257155802884);
+  const [viewNorthEastLng, setViewNorthEastLng] =
+    useState<number>(1.8402099609375002);
+  const [viewSouthWestLat, setViewSouthWestLat] =
+    useState<number>(51.07246834624619);
+  const [viewSouthWestLng, setViewSouthWestLng] =
+    useState<number>(-2.4444580078125004);
   const navigate = useNavigate();
   const prov = new OpenStreetMapProvider();
   useEffect(() => {
@@ -89,7 +98,7 @@ const MyMap = (props: { value: number[] }) => {
         setViewNorthEastLng(map.getBounds().getNorthEast().lng);
         setViewSouthWestLat(map.getBounds().getSouthWest().lat);
         setViewSouthWestLng(map.getBounds().getSouthWest().lng);
-      }, 1000);
+      }, 800);
       //need to debounce so that zoomend/dragend doesnt fetch data every zoomend/dragend:
       //Why does setting states lag frontend?
       map.on("zoomend", debouncedUpdateBounds);
@@ -147,17 +156,18 @@ const MyMap = (props: { value: number[] }) => {
                   <br />
                   Longtitude: <b>{postcode.long}</b>
                   <br />
-                  Average Price 2015-2022: <b>{postcode.avg_price_all_years}</b>
+                  Median Price 2015-2022:{" "}
+                  <b>{currencyFormatter(postcode.median_price_all_years)}</b>
                   <LineChartMUI
-                    averageHousePricePerPostcode={{
-                      "2015": postcode.avg_price_2015,
-                      "2016": postcode.avg_price_2016,
-                      "2017": postcode.avg_price_2017,
-                      "2018": postcode.avg_price_2018,
-                      "2019": postcode.avg_price_2019,
-                      "2020": postcode.avg_price_2020,
-                      "2021": postcode.avg_price_2021,
-                      "2022": postcode.avg_price_2022,
+                    medianHousePricePerPostcode={{
+                      "2015": postcode.median_price_2015,
+                      "2016": postcode.median_price_2016,
+                      "2017": postcode.median_price_2017,
+                      "2018": postcode.median_price_2018,
+                      "2019": postcode.median_price_2019,
+                      "2020": postcode.median_price_2020,
+                      "2021": postcode.median_price_2021,
+                      "2022": postcode.median_price_2022,
                     }}
                   />
                   <Button
@@ -172,7 +182,8 @@ const MyMap = (props: { value: number[] }) => {
                 <Tooltip>
                   <b>{postcode.postcode}</b>
                   <br></br>
-                  Average Price 2015-2022: <b>{postcode.avg_price_all_years}</b>
+                  Median Price 2015-2022:{" "}
+                  <b>{currencyFormatter(postcode.median_price_all_years)}</b>
                 </Tooltip>
               </Marker>
             ))}
