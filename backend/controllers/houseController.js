@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 
 //get all house sales for postcode
 const getHousesSoldByPostcode = async (req, res) => {
-  const { postcode } = req.params;
+  const { postcode } = req.query;
   console.log(postcode);
-  const houseSales = await HouseSale.find({ postcode }).sort({ date: -1 });
+  const houseSales = await HouseSale.find({ postcode })
+    .sort({ date: -1 })
+    .limit(200);
 
   if (!houseSales || houseSales.length === 0) {
     return res
@@ -19,7 +21,7 @@ const getHousesSoldByPostcode = async (req, res) => {
 //get all house sales for postcode selected
 //{postcode: {$in:["AL9 7EB","SE10 9EB","NG31 8NQ"]}}
 const getHousesSoldByPostcodeSelected = async (req, res) => {
-  const selectedArea = req.params.selectedArea.replace(/\[|\]/g, "").split(",");
+  const selectedArea = req.body.selectedArea.replace(/\[|\]/g, "").split(",");
   console.log(selectedArea);
   const houseSales = await HouseSale.find({
     postcode: { $in: selectedArea },

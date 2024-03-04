@@ -40,7 +40,18 @@ const HouseSaleInfo = () => {
     };
 
     const fetchHouseSales = async (postcode: string) => {
-      const response = await fetch(`/api/houses/postcode/${postcode}`);
+      let apiUrl;
+      apiUrl = `/api/houses/postcode/`;
+      const queryParams = new URLSearchParams({ postcode });
+
+      apiUrl += `?${queryParams}`;
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await fetch(apiUrl, requestOptions);
       const json = await response.json();
 
       if (response.ok) {
@@ -100,7 +111,7 @@ const HouseSaleInfo = () => {
                 {singleHouseSale?.address5}{" "}
                 {singleHouseSale?.address6 === singleHouseSale?.address5
                   ? ""
-                  : singleHouseSale?.address6}
+                  : singleHouseSale?.address6}{" "}
                 {singleHouseSale?.address7 === singleHouseSale?.address6
                   ? ""
                   : singleHouseSale?.address7}

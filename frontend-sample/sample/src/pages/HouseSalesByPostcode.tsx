@@ -29,12 +29,32 @@ const HouseSalesByPostcode = () => {
     setIsLoading(true);
     const fetchHouseSales = async () => {
       let apiUrl;
+      let requestBody;
+      let requestOptions;
       if (selectedArea) {
-        apiUrl = `/api/houses/postcode/selected/${selectedArea}`;
+        apiUrl = `/api/houses/postcode/selected`;
+        requestBody = JSON.stringify({ selectedArea });
+        requestOptions = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: requestBody,
+        };
       } else {
-        apiUrl = `/api/houses/postcode/${postcode}`;
+        apiUrl = `/api/houses/postcode/`;
+        // @ts-expect-error type -> postcodes
+        const queryParams = new URLSearchParams({ postcode });
+
+        apiUrl += `?${queryParams}`;
+        requestOptions = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
       }
-      const response = await fetch(apiUrl);
+      const response = await fetch(apiUrl, requestOptions);
       const json = await response.json();
 
       if (response.ok) {
