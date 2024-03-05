@@ -19,18 +19,6 @@ const postcodeSchema = new Schema({
     type: Number,
     required: true,
   },
-  median_price_2015: {
-    type: Number,
-    required: true,
-  },
-  median_price_2016: {
-    type: Number,
-    required: true,
-  },
-  median_price_2017: {
-    type: Number,
-    required: true,
-  },
   median_price_2018: {
     type: Number,
     required: true,
