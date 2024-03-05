@@ -50,14 +50,11 @@ const EditFeature = (props: { filterValues: number[] }) => {
           <>
             <LineChartMUI
               medianHousePricePerPostcode={{
-                "2015": Number(medianPricesAllYears[0]),
-                "2016": Number(medianPricesAllYears[1]),
-                "2017": Number(medianPricesAllYears[2]),
-                "2018": Number(medianPricesAllYears[3]),
-                "2019": Number(medianPricesAllYears[4]),
-                "2020": Number(medianPricesAllYears[5]),
-                "2021": Number(medianPricesAllYears[6]),
-                "2022": Number(medianPricesAllYears[7]),
+                "2018": Number(medianPricesAllYears[0]),
+                "2019": Number(medianPricesAllYears[1]),
+                "2020": Number(medianPricesAllYears[2]),
+                "2021": Number(medianPricesAllYears[3]),
+                "2022": Number(medianPricesAllYears[4]),
               }}
             />
             <Button
@@ -112,16 +109,7 @@ const EditFeature = (props: { filterValues: number[] }) => {
   };
   // @ts-expect-error type -> postcodes
   const calculateYearlyMedianPrice = (postcodes) => {
-    const years = [
-      "2015",
-      "2016",
-      "2017",
-      "2018",
-      "2019",
-      "2020",
-      "2021",
-      "2022",
-    ];
+    const years = ["2018", "2019", "2020", "2021", "2022"];
     const medianPricesAllYears = years.map((year) => {
       const validPostcodes = postcodes.filter(
         // @ts-expect-error type -> postcodes

@@ -32,9 +32,6 @@ interface Postcode {
   long: number;
   postcode: string;
   median_price_all_years: number;
-  median_price_2015: number;
-  median_price_2016: number;
-  median_price_2017: number;
   median_price_2018: number;
   median_price_2019: number;
   median_price_2020: number;
@@ -77,6 +74,7 @@ const MyMap = (props: { value: number[] }) => {
           minPrice,
           maxPrice
         );
+        console.log(json);
         setPostcodes(json);
         setIsLoading(false);
       }
@@ -160,9 +158,6 @@ const MyMap = (props: { value: number[] }) => {
                   <b>{currencyFormatter(postcode.median_price_all_years)}</b>
                   <LineChartMUI
                     medianHousePricePerPostcode={{
-                      "2015": postcode.median_price_2015,
-                      "2016": postcode.median_price_2016,
-                      "2017": postcode.median_price_2017,
                       "2018": postcode.median_price_2018,
                       "2019": postcode.median_price_2019,
                       "2020": postcode.median_price_2020,
@@ -182,7 +177,7 @@ const MyMap = (props: { value: number[] }) => {
                 <Tooltip>
                   <b>{postcode.postcode}</b>
                   <br></br>
-                  Median Price 2015-2022:{" "}
+                  Median Price 2018-2022:{" "}
                   <b>{currencyFormatter(postcode.median_price_all_years)}</b>
                 </Tooltip>
               </Marker>
