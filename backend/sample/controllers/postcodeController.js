@@ -26,7 +26,7 @@ const getAllPostcodes = async (req, res) => {
       lat: { $gte: currentView[2], $lte: currentView[0] },
       long: { $gte: currentView[3], $lte: currentView[1] },
     })
-    .limit(5000)
+    .limit(10000)
     .lean();
   const filtered = postcodes.map((postcode) => ({
     _id: postcode._id,
@@ -34,9 +34,6 @@ const getAllPostcodes = async (req, res) => {
     lat: postcode.lat,
     long: postcode.long,
     median_price_all_years: postcode.median_price_all_years,
-    median_price_2015: postcode.median_price_2015,
-    median_price_2016: postcode.median_price_2016,
-    median_price_2017: postcode.median_price_2017,
     median_price_2018: postcode.median_price_2018,
     median_price_2019: postcode.median_price_2019,
     median_price_2020: postcode.median_price_2020,
@@ -66,9 +63,6 @@ const getAllPostcodesWithoutView = async (req, res) => {
     lat: postcode.lat,
     long: postcode.long,
     median_price_all_years: postcode.median_price_all_years,
-    median_price_2015: postcode.median_price_2015,
-    median_price_2016: postcode.median_price_2016,
-    median_price_2017: postcode.median_price_2017,
     median_price_2018: postcode.median_price_2018,
     median_price_2019: postcode.median_price_2019,
     median_price_2020: postcode.median_price_2020,
