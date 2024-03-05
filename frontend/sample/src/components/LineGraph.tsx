@@ -1,8 +1,6 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 
-const AverageHousePricePerYear = [
-  199556, 211724, 221402, 228353, 230611, 237217, 258429, 283378,
-];
+const AverageHousePricePerYear = [228353, 230611, 237217, 258429, 283378];
 
 export default function SimpleLineChart(props: {
   medianHousePricePerPostcode: { [key: string]: number };

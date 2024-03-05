@@ -11,3 +11,7 @@ Import ***houses_data.csv*** into ***houses_data*** collection, and ***postcodes
 houses_data import: ALL as ***String***.
 
 postcodes import: pcds as ***String***, rest as ***Double***.
+
+# Testing using sample dataset
+### Sample dataset: ~63'000 postcodes, ~457'000 house sale data.
+Once you obtain **.env** variable files, simply run **npm run dev** in backend/sample && frontend/sample
