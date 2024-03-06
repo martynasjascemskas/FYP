@@ -71,7 +71,7 @@ export default function RangeSlider(props: {
         {"House Price 2015-2022"}
       </Typography> */}
       <CustomSlider
-        getAriaLabel={() => "House Price 2015-2022"}
+        getAriaLabel={() => "House Price 2018-2022"}
         value={value2}
         onChange={handleChange}
         onChangeCommitted={(event, newValue) => {

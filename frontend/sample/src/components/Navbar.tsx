@@ -5,7 +5,7 @@ const Navbar = () => {
     <header>
       <div className="container">
         <Link to="">
-          <h1>UK House Prices: 2015 to 2022</h1>
+          <h1>SAMPLE UK House Prices: 2018 to 2022</h1>
         </Link>
       </div>
     </header>
