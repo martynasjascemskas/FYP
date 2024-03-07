@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import { GeoSearchControl } from "leaflet-geosearch";
-import "./geosearch.css";
+import "leaflet-geosearch/dist/geosearch.css";
 
 // @ts-expect-error Javascript
 const SearchControl = (props) => {
