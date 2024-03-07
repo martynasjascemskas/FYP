@@ -64,7 +64,7 @@ export default function DataTable({
       width: 150,
       valueFormatter: (params) => currencyFormatter(params.value),
     },
-    { field: "type", headerName: "Type", width: 120 },
+    { field: "type", headerName: "Type", width: 140 },
     {
       field: "button",
       headerName: "",
@@ -96,7 +96,13 @@ export default function DataTable({
         }}
         pageSizeOptions={[5, 10, 15, 20]}
         checkboxSelection={false}
-        sx={{ m: 2, border: 2, boxShadow: 4, borderColor: "primary.light" }}
+        sx={{
+          m: 2,
+          border: 2,
+          boxShadow: 4,
+          borderColor: "primary.light",
+          fontFamily: "Poppins",
+        }}
       />
     </div>
   );
