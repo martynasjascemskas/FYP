@@ -11,7 +11,7 @@ import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet/dist/leaflet.css";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import locationSvg from "./circle-svgrepo-com.svg";
+import locationSvg from "./assets/circle-svgrepo-com.svg";
 import LineChartMUI from "./LineGraph";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import HousesTable from "../components/HousesTable";
+import { Typography } from "@mui/material";
 
 export interface HouseSales {
   _id: string;
@@ -66,9 +67,19 @@ const HouseSalesByPostcode = () => {
   }, [postcode, selectedArea]);
   return (
     <div>
-      <b style={{ display: "flex", fontSize: "30px", marginLeft: "40%" }}>
+      <Typography
+        sx={{
+          display: "flex",
+          color: "text.primary",
+          fontSize: 32,
+          justifyContent: "center",
+          mr: 20,
+          fontFamily: "Poppins",
+        }}
+        variant="h6"
+      >
         {postcode}
-      </b>
+      </Typography>
       {isLoading ? <LinearProgress /> : null}
       <HousesTable houseSales={houseSales} />
     </div>

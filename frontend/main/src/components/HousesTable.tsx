@@ -64,7 +64,7 @@ export default function DataTable({
       width: 150,
       valueFormatter: (params) => currencyFormatter(params.value),
     },
-    { field: "type", headerName: "Type", width: 120 },
+    { field: "type", headerName: "Type", width: 140 },
     {
       field: "button",
       headerName: "",
