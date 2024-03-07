@@ -96,7 +96,13 @@ export default function DataTable({
         }}
         pageSizeOptions={[5, 10, 15, 20]}
         checkboxSelection={false}
-        sx={{ m: 2, border: 2, boxShadow: 4, borderColor: "primary.light" }}
+        sx={{
+          m: 2,
+          border: 2,
+          boxShadow: 4,
+          borderColor: "primary.light",
+          fontFamily: "Poppins",
+        }}
       />
     </div>
   );

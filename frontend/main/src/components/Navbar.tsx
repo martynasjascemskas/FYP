@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <header>
+    <header data-testid="navbar">
       <div className="container">
         <Link to="">
           <h1>UK House Prices: 2015 to 2022</h1>
