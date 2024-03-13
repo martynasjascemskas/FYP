@@ -5,13 +5,12 @@ import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 const CustomSlider = styled(Slider)(({ theme }) => ({
-  color: "grey",
+  color: "#e7195a",
   height: 3,
   padding: "10px 0",
   "& .MuiSlider-thumb": {
     height: 15,
     width: 15,
-    backgroundColor: "#DCDCDC",
     border: "1px solid currentColor",
     "&:hover": {
       boxShadow: "0 0 0 8px rgba(58, 133, 137, 0.16)",

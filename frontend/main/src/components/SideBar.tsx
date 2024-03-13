@@ -25,8 +25,12 @@ const SideBar = (props: {
         The median price for each postcode was then computed and utilized for
         the map representation.
       </p>
-      <MinMaxSlider value={props.value} onChange={props.onChange} />
-      <SecondSlider value={props.value} onChange={props.onChange} />
+      <div data-testid="min-max-slider">
+        <MinMaxSlider value={props.value} onChange={props.onChange} />
+      </div>
+      <div data-testid="high-value-slider">
+        <SecondSlider value={props.value} onChange={props.onChange} />
+      </div>
     </>
   );
 };

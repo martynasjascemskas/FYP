@@ -2,11 +2,12 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LinearProgress from "@mui/material/LinearProgress";
 import Paper from "@mui/material/Paper";
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { HouseSales } from "../pages/HouseSalesByPostcode";
 import HousesTable from "../components/HousesTable";
+import CurrencyPoundIcon from "@mui/icons-material/CurrencyPoundRounded";
+import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 interface SingleHouseSale {
   _id: string;
   price: string;
@@ -28,6 +29,11 @@ const HouseSaleInfo = () => {
   const [singleHouseSale, setSingleHouseSale] = useState<SingleHouseSale>();
   const [houseSales, setHouseSales] = useState<HouseSales[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "GBP",
+    maximumFractionDigits: 0,
+  }).format;
   useEffect(() => {
     setIsLoading(true);
     const fetchSingleHouseSale = async () => {
@@ -70,160 +76,103 @@ const HouseSaleInfo = () => {
     };
     fetchSingleHouseAndHouseSalesByPostcode();
   }, [_id]);
+  const priceNumber = parseFloat(singleHouseSale?.price ?? "0");
+  const formattedPrice = currencyFormatter(priceNumber);
   return (
     <div>
       {isLoading ? <LinearProgress /> : null}
       <Paper sx={{ mt: 2, mx: 40 }} elevation={7}>
-        <Container
+        <Box component="section" sx={{ width: "1230px" }}>
+          <iframe
+            width="1243"
+            height="450"
+            style={{
+              border: 0,
+              margin: "10px",
+              borderRadius: "6px",
+              boxShadow: "0 2px 5px 1px rgba(0, 0, 0, 0.5)",
+            }}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            src={`https://www.google.com/maps/embed/v1/place?key=${
+              import.meta.env.VITE_GOOGLE_MAPS_API
+            }&q=${singleHouseSale?.address1}+${singleHouseSale?.address2}+${
+              singleHouseSale?.address3
+            }+${singleHouseSale?.address4}+${singleHouseSale?.address5}+${
+              singleHouseSale?.address6 === singleHouseSale?.address5
+                ? ""
+                : singleHouseSale?.address6
+            }+${
+              singleHouseSale?.address7 === singleHouseSale?.address6
+                ? ""
+                : singleHouseSale?.address7
+            }&maptype=satellite&zoom=19`}
+          ></iframe>
+        </Box>
+        <Typography
           sx={{
-            display: "flex",
+            color: "text.primary",
+            mx: 2,
+            fontSize: 28,
+          }}
+          variant="h5"
+        >
+          {singleHouseSale?.address1} {singleHouseSale?.address2}{" "}
+          {singleHouseSale?.address3},
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: "400", color: "grey", fontSize: 22 }}
+          >
+            {singleHouseSale?.address4} {singleHouseSale?.address5}
+            {", "}
+            {singleHouseSale?.address6 === singleHouseSale?.address5
+              ? ""
+              : singleHouseSale?.address6}{" "}
+            {singleHouseSale?.address7 === singleHouseSale?.address6
+              ? ""
+              : singleHouseSale?.address7}
+          </Typography>
+        </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            mx: 2,
+            color: "text.secondary",
+            fontWeight: "400",
+            fontSize: 20,
           }}
         >
-          <Box
-            component="section"
-            sx={{ width: "800px", border: "3px solid lightgrey", margin: 2 }}
-          >
-            <Typography
-              sx={{
-                backgroundColor: "lightgrey",
-                border: "3px solid grey",
-                p: 1,
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h4"
-              gutterBottom
-            >
-              Property Details
-            </Typography>
-            <Typography sx={{ margin: 2 }} variant="h6">
-              ADDRESS
-              <Typography
-                sx={{
-                  fontWeight: "bold",
-                  backgroundColor: "lightgrey",
-                  border: "2px solid grey",
-                }}
-                variant="h6"
-              >
-                {singleHouseSale?.address1} {singleHouseSale?.address2}{" "}
-                {singleHouseSale?.address3} {singleHouseSale?.address4}{" "}
-                {singleHouseSale?.address5}{" "}
-                {singleHouseSale?.address6 === singleHouseSale?.address5
-                  ? ""
-                  : singleHouseSale?.address6}{" "}
-                {singleHouseSale?.address7 === singleHouseSale?.address6
-                  ? ""
-                  : singleHouseSale?.address7}
-              </Typography>
-            </Typography>
-            <div style={{ display: "flex", alignContent: "center" }}>
-              <Typography sx={{ margin: 2 }} variant="h6">
-                DATE SOLD
-                <Typography
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "lightgrey",
-                    border: "2px solid grey",
-                  }}
-                  variant="h6"
-                >
-                  {singleHouseSale?.date}
-                </Typography>
-              </Typography>
-              <Typography sx={{ margin: 2 }} variant="h6">
-                PRICE SOLD
-                <Typography
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "lightgrey",
-                    border: "2px solid grey",
-                  }}
-                  variant="h6"
-                >
-                  {singleHouseSale?.price}
-                </Typography>
-              </Typography>
-            </div>
-            <div style={{ display: "flex", alignContent: "center" }}>
-              <Typography sx={{ margin: 2 }} variant="h6">
-                NEW BUILD
-                <Typography
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "lightgrey",
-                    border: "2px solid grey",
-                  }}
-                  variant="h6"
-                >
-                  {singleHouseSale?.new_build === "N" ? "NO" : "YES"}
-                </Typography>
-              </Typography>
-              <Typography sx={{ margin: 2 }} variant="h6">
-                TYPE OF BUILDING
-                <Typography
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "lightgrey",
-                    border: "2px solid grey",
-                  }}
-                  variant="h6"
-                >
-                  {singleHouseSale?.type === "F"
-                    ? "Flat"
-                    : singleHouseSale?.type === "S"
-                    ? "Semi-Detached"
-                    : singleHouseSale?.type === "O"
-                    ? "Office"
-                    : singleHouseSale?.type === "T"
-                    ? "Terraced"
-                    : singleHouseSale?.type === "D"
-                    ? "Detached"
-                    : singleHouseSale?.type}
-                </Typography>
-              </Typography>
-            </div>
-          </Box>
-          <Box
-            component="section"
-            sx={{ width: "800px", border: "3px solid lightgrey", margin: 2 }}
-          >
-            <Typography
-              sx={{
-                backgroundColor: "lightgrey",
-                alignItems: "center",
-                border: "3px solid grey",
-                p: 1,
-                textAlign: "center",
-                fontWeight: "600",
-              }}
-              variant="h4"
-              gutterBottom
-            >
-              Location
-            </Typography>
-            <iframe
-              width="600"
-              height="450"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={`https://www.google.com/maps/embed/v1/place?key=${
-                import.meta.env.VITE_GOOGLE_MAPS_API
-              }&q=${singleHouseSale?.address1}+${singleHouseSale?.address2}+${
-                singleHouseSale?.address3
-              }+${singleHouseSale?.address4}+${singleHouseSale?.address5}+${
-                singleHouseSale?.address6 === singleHouseSale?.address5
-                  ? ""
-                  : singleHouseSale?.address6
-              }+${
-                singleHouseSale?.address7 === singleHouseSale?.address6
-                  ? ""
-                  : singleHouseSale?.address7
-              }`}
-            ></iframe>
-          </Box>
-        </Container>
+          {singleHouseSale?.type === "F"
+            ? "Flat"
+            : singleHouseSale?.type === "S"
+            ? "Semi-Detached House"
+            : singleHouseSale?.type === "O"
+            ? "Office"
+            : singleHouseSale?.type === "T"
+            ? "Terraced House"
+            : singleHouseSale?.type === "D"
+            ? "Detached House"
+            : singleHouseSale?.type}
+        </Typography>
+        <Typography sx={{ margin: 2, display: "flex" }} variant="h6">
+          <CurrencyPoundIcon viewBox="2 -5 28 24" />
+          Price
+          <Typography variant="h6" sx={{ ml: 1, color: "#e7195a" }}>
+            {formattedPrice}
+          </Typography>
+        </Typography>
+        <Typography sx={{ margin: 2, display: "flex" }} variant="h6">
+          <AccessTimeRoundedIcon viewBox="2 -2 23 24" />
+          Date sold
+          <Typography variant="h6" sx={{ ml: 1, color: "#e7195a" }}>
+            {singleHouseSale?.date}
+          </Typography>
+        </Typography>
+        <Typography variant="h6" sx={{ ml: 2, color: "success.dark" }}>
+          {singleHouseSale?.new_build === "N"
+            ? "Well-established property"
+            : "Newly built!"}
+        </Typography>
         <HousesTable houseSales={houseSales} />
       </Paper>
     </div>
