@@ -36,6 +36,7 @@ const HouseSaleInfo = () => {
   }).format;
   useEffect(() => {
     setIsLoading(true);
+    // Fetch single house sale by ID from previous page table.
     const fetchSingleHouseSale = async () => {
       const response = await fetch(`/api/houses/${_id}`);
       const json = await response.json();
@@ -44,7 +45,7 @@ const HouseSaleInfo = () => {
         return json;
       }
     };
-
+    // Fetch All house sales based on selected postcode.
     const fetchHouseSales = async (postcode: string) => {
       let apiUrl;
       apiUrl = `/api/houses/postcode/`;
@@ -64,7 +65,7 @@ const HouseSaleInfo = () => {
         return json;
       }
     };
-
+    // Function to fetch both and then setLoading to false.
     const fetchSingleHouseAndHouseSalesByPostcode = async () => {
       const tempSingleHouse = await fetchSingleHouseSale();
       const tempHouseSalesByPostcode = await fetchHouseSales(
@@ -76,8 +77,10 @@ const HouseSaleInfo = () => {
     };
     fetchSingleHouseAndHouseSalesByPostcode();
   }, [_id]);
+  // Parsing number to float and formatting value for easier visualisation.
   const priceNumber = parseFloat(singleHouseSale?.price ?? "0");
   const formattedPrice = currencyFormatter(priceNumber);
+  // Google embedded Map for house sale along with information about house. Table for more house sales in postcode.
   return (
     <div>
       {isLoading ? <LinearProgress /> : null}

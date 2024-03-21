@@ -24,7 +24,7 @@ for filename in os.listdir('.'):
 
 postcodes_df.to_csv('combined_postcodes_median_prices.csv', index=False)
 
-# Create a new csv file called "combined_postcodes_prices.csv". 
+# ChatGPT 3.5 Default: Create a new csv file called "combined_postcodes_prices.csv". 
 # Calculate the median price per year per postcode using csv files called "reduced_pp-<year>.csv".
 # There are multiple files with different years. 
 # Using the "combined_postcodes.csv" file which looks like picture 1,

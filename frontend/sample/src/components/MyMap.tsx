@@ -22,6 +22,7 @@ import "leaflet-draw/dist/leaflet.draw.css";
 import EditFeature from "./EditFeature";
 import _debounce from "lodash/debounce";
 
+// Custom icon svg
 const customIcon1 = new L.Icon({
   iconUrl: locationSvg,
   iconSize: new L.Point(40, 47),
@@ -39,6 +40,7 @@ interface Postcode {
   median_price_2022: number;
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "GBP",
@@ -60,12 +62,10 @@ const MyMap = (props: { value: number[] }) => {
   useEffect(() => {
     const fetchPostcodes = async (minPrice: number, maxPrice: number) => {
       setIsLoading(true);
+      //first fetch default state values, then fetching values depending on filter and map view bounds.
       const response = await fetch(
         `/api/postcodes?minPrice=${minPrice}&maxPrice=${maxPrice}&currentView=[${viewNorthEastLat},${viewNorthEastLng},${viewSouthWestLat},${viewSouthWestLng}]`
       );
-      // const response = await fetch(
-      //   `/api/postcodes/withoutview?minPrice=${minPrice}&maxPrice=${maxPrice}`
-      // );
       const json = await response.json();
 
       if (response.ok) {
@@ -87,6 +87,7 @@ const MyMap = (props: { value: number[] }) => {
     viewSouthWestLng,
   ]);
   const GetCurrentViewBounds = () => {
+    // function to get map view bounds. Created to minimise the amount of postcodes being fetched.
     const map = useMap();
     useEffect(() => {
       if (!map) return;
@@ -95,14 +96,14 @@ const MyMap = (props: { value: number[] }) => {
         setViewNorthEastLng(map.getBounds().getNorthEast().lng);
         setViewSouthWestLat(map.getBounds().getSouthWest().lat);
         setViewSouthWestLng(map.getBounds().getSouthWest().lng);
-      }, 800);
-      //need to debounce so that zoomend/dragend doesnt fetch data every zoomend/dragend:
-      //Why does setting states lag frontend?
+      }, 1000);
+      // Sending map events on zoom end and drag end to debounce function(set timeout) everytime you drag or zoom on map
+      // This was done in order to set an action timer and then fetch required postcodes if user stops moving
       map.on("zoomend", debouncedUpdateBounds);
-      map.on("drag", debouncedUpdateBounds);
+      map.on("dragend", debouncedUpdateBounds);
       return () => {
         map.off("zoomend", debouncedUpdateBounds);
-        map.off("drag", debouncedUpdateBounds);
+        map.off("dragend", debouncedUpdateBounds);
       };
     }, [map]);
     return null;
@@ -130,6 +131,7 @@ const MyMap = (props: { value: number[] }) => {
           searchLabel={"Search"}
           notFoundMessage={"Address Not Found"}
           keepResult={true}
+          style={"bar"}
         />
         <GetCurrentViewBounds />
         <EditFeature filterValues={props.value} />

@@ -1,9 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-//import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
+// Styling for slider.
 const CustomSlider = styled(Slider)(({ theme }) => ({
   color: "#e7195a",
   height: 3,
@@ -34,6 +34,7 @@ const CustomSlider = styled(Slider)(({ theme }) => ({
   },
 }));
 
+// Marks on slider which shows value.
 const marks = [
   {
     value: 1000000,
@@ -57,18 +58,9 @@ export default function RangeSlider(props: {
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue2(newValue as number[]);
   };
+  // Set slider value onchange, if slider button is let go changecommited (mouseup event) value is set. This value is then sent to home page.
   return (
     <Box sx={{ width: 300 }}>
-      {/* <Typography
-        id="range-slider"
-        align={"center"}
-        variant="button"
-        sx={{ fontWeight: "bold" }}
-        display="block"
-        marginTop={"10px"}
-      >
-        {"House Price 2015-2022"}
-      </Typography> */}
       <CustomSlider
         getAriaLabel={() => "House Price 2018-2022"}
         value={value2}

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "./assets/logo.svg";
-
+// Navigation bar containing icon, etc.
 const Navbar = () => {
   return (
     <header data-testid="navbar">

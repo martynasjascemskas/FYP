@@ -19,32 +19,29 @@ const EditFeature = (props: { filterValues: number[] }) => {
       const rectangleSouthWestLat = layer.getBounds().getSouthWest().lat;
       const rectangleSouthWestLng = layer.getBounds().getSouthWest().lng;
 
+      // Fetch postcodes in created rectangle depending on filter values, and rectangle lat/long values Top-Right(rectangleNorthEastLat, rectangleNorthEastLng) and Bottom-Left(rectangleSouthWestLat, rectangleSouthWestLng)
+      // This allows for chart and further details creation.
       const response = await fetch(
         `/api/postcodes?minPrice=${props.filterValues[0]}&maxPrice=${props.filterValues[1]}&currentView=[${rectangleNorthEastLat}, ${rectangleNorthEastLng},${rectangleSouthWestLat}, ${rectangleSouthWestLng}]`
       );
       const json = await response.json();
       let postcodes = null;
       if (response.ok) {
-        // console.log(
-        //   "fetching Edit Features",
-        //   props.filterValues[0],
-        //   props.filterValues[1],
-        //   rectangleNorthEastLat,
-        //   rectangleNorthEastLng,
-        //   rectangleSouthWestLat,
-        //   rectangleSouthWestLng
-        // );
         postcodes = json;
       }
-      console.log(postcodes);
       const selectedArea: string[] = postcodes.map(
         // @ts-expect-error type -> postcode
         (postcode) => postcode.postcode
       );
+      // MedianPrice is the median price for the selected area.
       const medianPrice = calculateMedianPrice(postcodes);
+      // Calculates and return the yearly median price.
       const medianPricesAllYears = calculateYearlyMedianPrice(postcodes);
       const div = document.createElement("div");
       const root = createRoot(div);
+      // Leaflet Draw only allows for singular html div as the output of the drawn shape.
+      // flushSync and root.render allows for asynchronous rendering of React components.
+      // without the flushsync and root.render, the innerhtml would be plain html without any clickablity or hover ability.
       flushSync(() => {
         root.render(
           <>
@@ -92,6 +89,7 @@ const EditFeature = (props: { filterValues: number[] }) => {
 
   // @ts-expect-error type -> postcodes
   const calculateMedianPrice = (postcodes) => {
+    // calculates median price for selected area taking in the fetched postcodes.
     const sortedPrices = postcodes
       // @ts-expect-error type -> postcodes
       .map((postcode) => postcode.median_price_all_years)
@@ -112,6 +110,7 @@ const EditFeature = (props: { filterValues: number[] }) => {
   };
   // @ts-expect-error type -> postcodes
   const calculateYearlyMedianPrice = (postcodes) => {
+    // calculates median yearly price for selected area taking in the fetched postcodes.
     const years = [
       "2015",
       "2016",
@@ -156,7 +155,7 @@ const EditFeature = (props: { filterValues: number[] }) => {
 
     return medianPricesAllYears;
   };
-
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "GBP",

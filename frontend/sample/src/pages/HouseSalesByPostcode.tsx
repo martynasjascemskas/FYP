@@ -27,6 +27,7 @@ const HouseSalesByPostcode = () => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setIsLoading(true);
+    // Fetch house sales in selected area/postcode. POST http method used for selected area since GET http method has limited query length.
     const fetchHouseSales = async () => {
       let apiUrl;
       let requestBody;
@@ -65,6 +66,7 @@ const HouseSalesByPostcode = () => {
 
     fetchHouseSales();
   }, [postcode, selectedArea]);
+  // Simple table to represent house sales in selected area/postcode.
   return (
     <div>
       <Typography
