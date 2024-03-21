@@ -4,6 +4,7 @@ import Slider from "@mui/material/Slider";
 import { Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
+// Styling for slider.
 const CustomSlider = styled(Slider)(({ theme }) => ({
   color: "#e7195a",
   height: 3,
@@ -33,7 +34,7 @@ const CustomSlider = styled(Slider)(({ theme }) => ({
     },
   },
 }));
-
+// Marks on slider which shows value.
 const marks = [
   {
     value: 0,
@@ -57,6 +58,7 @@ export default function RangeSlider(props: {
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue2(newValue as number[]);
   };
+  // Set slider value onchange, if slider button is let go changecommited (mouseup event) value is set. This value is then sent to home page.
   return (
     <Box sx={{ width: 300 }}>
       <Typography

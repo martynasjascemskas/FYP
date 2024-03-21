@@ -20,5 +20,5 @@ df = df[new_order]
 modified_file_path = 'modified_data.csv'
 df.to_csv(modified_file_path, index=False)
 
-# Can you create a new column which goes after "long" column which would represent the median price of the postcode throughout all the years. 
+# ChatGPT 3.5 Default: Can you create a new column which goes after "long" column which would represent the median price of the postcode throughout all the years. 
 # All of the year price is displayed in columns with index 3,4,5,6,7,8,9,10. indexes 0 = pcds, 1 = lat, 2 = long.

@@ -2,6 +2,8 @@ import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { HouseSales } from "../pages/HouseSalesByPostcode";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+// MUI DataTable, information is transformed (F for Flat, T for Terraced House, etc.)
+// Some information is left out, since town/city/region for certain houses addresses are the same in gov.uk price sale data.
 
 export default function DataTable({
   houseSales,
@@ -74,6 +76,7 @@ export default function DataTable({
           <Button
             variant="contained"
             onClick={() => {
+              // navigation to houseSaleInfo page which shows individual house sale information.
               navigate(`/houseSaleInfo/${params.row.id}`);
             }}
           >
