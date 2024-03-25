@@ -4,7 +4,7 @@ import { describe, it } from "vitest";
 import App from "../App";
 
 describe("App", () => {
-  it("renders Navbar and text in App", () => {
+  it("renders Navbar in App", () => {
     render(
       <MemoryRouter>
         <App />
@@ -13,8 +13,15 @@ describe("App", () => {
 
     const navbarElement = screen.getByTestId("navbar");
     expect(navbarElement).toBeInTheDocument();
+  });
+  it("renders text in App", () => {
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
 
-    const navbarText = screen.getByText("UK House Prices: 2015 to 2022");
+    const navbarText = screen.getByText("SAMPLE UK House Prices: 2018 to 2022");
     expect(navbarText).toBeInTheDocument();
   });
 });

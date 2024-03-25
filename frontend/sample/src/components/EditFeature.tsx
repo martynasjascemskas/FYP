@@ -86,6 +86,13 @@ const EditFeature = (props: { filterValues: number[] }) => {
 
   // @ts-expect-error type -> postcodes
   const calculateMedianPrice = (postcodes) => {
+    //     const total = postcodes.reduce(
+    //       // @ts-expect-error type -> postcode
+    //       (sum: number, postcode) => sum + postcode.avg_price_all_years,
+    //       0
+    //     );
+    //     const averagePrice = (total / postcodes.length).toFixed(0);
+    // ChatGPT 3.5, Default: convert this code to calculate the median
     // calculates median price for selected area taking in the fetched postcodes.
     const sortedPrices = postcodes
       // @ts-expect-error type -> postcodes
@@ -107,6 +114,34 @@ const EditFeature = (props: { filterValues: number[] }) => {
   };
   // @ts-expect-error type -> postcodes
   const calculateYearlyMedianPrice = (postcodes) => {
+    //ChatGPT 3.5, Default : convert this code to calculate the yearly median
+    // const calculateYearlyAvgPrice = (postcodes) => {
+    //     const years = [
+    //       "2015",
+    //       "2016",
+    //       "2017",
+    //       "2018",
+    //       "2019",
+    //       "2020",
+    //       "2021",
+    //       "2022",
+    //     ];
+    //     const averagePricesAllYears = years.map((year) => {
+    //       const validPostcodes = postcodes.filter(
+    //         // @ts-expect-error type -> postcode
+    //         (postcode) => postcode[`avg_price_${year}`] !== 0
+    //       );
+    //       const totalPrices = validPostcodes.reduce(
+    //         // @ts-expect-error type -> postcode
+    //         (sum: number, postcode) => sum + postcode[`avg_price_${year}`],
+    //         0
+    //       );
+    //       return validPostcodes.length > 0
+    //         ? (totalPrices / validPostcodes.length).toFixed(0)
+    //         : 0;
+    //     });
+    //     return averagePricesAllYears;
+    //   };
     // calculates median yearly price for selected area taking in the fetched postcodes.
     const years = ["2018", "2019", "2020", "2021", "2022"];
     const medianPricesAllYears = years.map((year) => {
