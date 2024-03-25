@@ -29,7 +29,7 @@ const getAllPostcodes = async (req, res) => {
       lat: { $gte: currentView[2], $lte: currentView[0] },
       long: { $gte: currentView[3], $lte: currentView[1] },
     })
-    .limit(5000)
+    .limit(10000)
     .lean();
   const filtered = postcodes.map((postcode) => ({
     _id: postcode._id,

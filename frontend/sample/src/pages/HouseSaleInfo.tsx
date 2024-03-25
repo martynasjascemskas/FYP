@@ -121,16 +121,20 @@ const HouseSaleInfo = () => {
           variant="h5"
         >
           {singleHouseSale?.address1} {singleHouseSale?.address2}{" "}
-          {singleHouseSale?.address3},
+          {singleHouseSale?.address3 + ","}
           <Typography
             variant="h6"
             sx={{ fontWeight: "400", color: "grey", fontSize: 22 }}
           >
-            {singleHouseSale?.address4} {singleHouseSale?.address5}
-            {", "}
+            {singleHouseSale?.address4 === ""
+              ? ""
+              : singleHouseSale?.address4 + ", "}
+            {singleHouseSale?.address5 === ""
+              ? ""
+              : singleHouseSale?.address5 + ", "}
             {singleHouseSale?.address6 === singleHouseSale?.address5
               ? ""
-              : singleHouseSale?.address6}{" "}
+              : singleHouseSale?.address6 + ", "}
             {singleHouseSale?.address7 === singleHouseSale?.address6
               ? ""
               : singleHouseSale?.address7}
