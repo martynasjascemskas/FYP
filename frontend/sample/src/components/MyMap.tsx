@@ -100,10 +100,10 @@ const MyMap = (props: { value: number[] }) => {
       // Sending map events on zoom end and drag end to debounce function(set timeout) everytime you drag or zoom on map
       // This was done in order to set an action timer and then fetch required postcodes if user stops moving
       map.on("zoomend", debouncedUpdateBounds);
-      map.on("dragend", debouncedUpdateBounds);
+      map.on("drag", debouncedUpdateBounds);
       return () => {
         map.off("zoomend", debouncedUpdateBounds);
-        map.off("dragend", debouncedUpdateBounds);
+        map.off("drag", debouncedUpdateBounds);
       };
     }, [map]);
     return null;
