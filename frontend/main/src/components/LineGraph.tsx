@@ -1,5 +1,6 @@
 import { LineChart } from "@mui/x-charts/LineChart";
 
+// Average house price in uk 2015-2022
 const AverageHousePricePerYear = [
   199556, 211724, 221402, 228353, 230611, 237217, 258429, 283378,
 ];
@@ -7,6 +8,7 @@ const AverageHousePricePerYear = [
 export default function SimpleLineChart(props: {
   medianHousePricePerPostcode: { [key: string]: number };
 }) {
+  // If houseprice in postcode in a year is 0 (no sales that year in that postcode), set value to null (to not be visible in chart).
   const medianHousePricePerPostcodeTransformed = Object.fromEntries(
     Object.entries(props.medianHousePricePerPostcode).map((entry) => {
       if (entry[1] > 0) {

@@ -21,7 +21,10 @@ const getAllPostcodes = async (req, res) => {
       pcds: { $exists: true },
       median_price_all_years: {
         $gte: minPrice,
-        $lte: maxPrice >= 500000 ? Number.MAX_SAFE_INTEGER : maxPrice,
+        $lte:
+          maxPrice == 500000 || maxPrice == 5000000
+            ? Number.MAX_SAFE_INTEGER
+            : maxPrice,
       },
       lat: { $gte: currentView[2], $lte: currentView[0] },
       long: { $gte: currentView[3], $lte: currentView[1] },
@@ -41,7 +44,6 @@ const getAllPostcodes = async (req, res) => {
     median_price_2022: postcode.median_price_2022,
   }));
   res.status(200).json(filtered);
-  //res.status(200).json(postcodes);
 };
 
 const getAllPostcodesWithoutView = async (req, res) => {
